@@ -3,7 +3,7 @@
 
 <PageTitle>Мои скилы</PageTitle>
 
-@if (!_skills.Any())
+@if (_skills == null)
 {
     <p><em>Идёт загрузка скилов</em></p>
 }
@@ -53,7 +53,7 @@ else
 }
 
 @code {
-    private readonly List<Skill> _skills = new List<Skill>();
+    private List<Skill>? _skills = null;
     private string[] skillNames = { "Начинающий", "Имею опыт", "Продвинутый", "Эксперт" };
     private Skill editItem = new Skill();
     private List<string>? skillDict = null;
@@ -61,18 +61,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<Skill[]>("skills/my");
-        if (result != null)
-        {
-            _skills.Clear();
-            _skills.AddRange(result);
-        }
+        _skills = await Http.GetFromJsonAsync<List<Skill>>("skills/my");
     }
 
     private async Task SaveItem()
     {
         await Http.PutAsJsonAsync<Skill>("skills/add", editItem);
-        _skills.Add(editItem);
+        _skills?.Add(editItem);
         editItem = new Skill();
     }
 

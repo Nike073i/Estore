@@ -1,40 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Resunet.BL.Auth;
+using Resunet.BL.Profile;
+using Resunet.Filters;
+using Resunet.ViewMappers;
 
 namespace Resunet.Controllers
 {
     [ApiController]
+    [SiteAuthorize("/login", true)]
     public class SkillsController : ControllerBase
     {
-        static List<Skill> skills = new()
+        private readonly ISkill _skill;
+        private readonly ICurrentUser _currentUser;
+        private readonly IProfile _profile;
+
+        public SkillsController(ISkill skill, ICurrentUser currentUser, IProfile profile)
         {
-            new Skill { Level = 3, Name = "C#" },
-            new Skill { Level = 0, Name = "Blazor" },
-        };
+            _skill = skill;
+            _currentUser = currentUser;
+            _profile = profile;
+        }
 
         [HttpGet("/skills/my")]
-        public IActionResult My()
+        public async Task<IActionResult> My()
         {
-            return Ok(skills);
+            var profiles = await _currentUser.GetCurrentProfiles();
+            var mySkills = await _profile.GetProfileSkills(profiles.FirstOrDefault()?.ProfileId ?? 0);
+            return Ok(mySkills.Select(mySkills => new SkillViewModel
+            {
+                Name = mySkills.SkillName,
+                Level = mySkills.Level
+            }));
         }
 
         [HttpPut("/skills/add")]
-        public IActionResult My([FromBody] Skill skill)
+        public async Task<IActionResult> My([FromBody] SkillViewModel skill)
         {
-            skills.Add(skill);
+            var profiles = await _currentUser.GetCurrentProfiles();
+            var profileSkillModel = SkillMapper.MapSkillViewModelToProfileSkillModel(skill);
+            profileSkillModel.ProfileId = profiles.FirstOrDefault()?.ProfileId ?? 0;
+            await _profile.AddProfileSkill(profileSkillModel);
             return Ok();
         }
 
         [HttpGet("/skills/search")]
-        public IActionResult Search(string filter)
+        public async Task<IActionResult> Search([FromQuery] string filter)
         {
-            var skilsDict = new List<string> { "C#", "SQL Server", "MySQL", "PosrgreSQL" };
-            return Ok(skilsDict.Where(skill => skill.Contains(filter)).Take(5));
-        }
-
-        public class Skill
-        {
-            public string? Name { get; set; }
-            public int Level { get; set; }
+            var skills = await _skill.Search(5, filter);
+            return Ok(skills.Select(model => model.SkillName));
         }
     }
 }

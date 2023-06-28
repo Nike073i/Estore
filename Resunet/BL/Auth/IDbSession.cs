@@ -10,5 +10,9 @@ namespace Resunet.BL.Auth
         Task<bool> IsLoggedIn();
         Task Lock();
         void ResetSessionCache();
+        void AddValue(string key, object value);
+        void RemoveValue(string key);
+        Task UpdateSessionData();
+        object TryGetOrDefault(string key, object defaultValue);
     }
 }

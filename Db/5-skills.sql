@@ -9,3 +9,5 @@ CREATE TABLE IF NOT EXISTS ProfileSkill (
 	SkillId INT,
 	Level INT
 );
+
+CREATE INDEX IF NOT EXISTS IX_ProfileSkill_ProfileId on ProfileSkill(ProfileId);

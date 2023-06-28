@@ -31,13 +31,22 @@ namespace Resunet.DAL
             await DbHelper.ExecuteAsync(sql, new { sessionId = sessionId });
         }
 
-        public async Task Update(SessionModel model)
+        public async Task Update(Guid dbSessionId, string sessionData)
         {
             string sql = @"
                 UPDATE DbSession
-                SET SessionData = @SessionData, LastAccessed = @LastAccessed,  UserId = @UserId
+                SET SessionData = @SessionData
                 WHERE DbSessionId = @DbSessionId";
-            await DbHelper.ExecuteAsync(sql, model);
+            await DbHelper.ExecuteAsync(sql, new { DbSessionId = dbSessionId, SessionData = sessionData });
+        }
+
+        public async Task Extend(Guid dbSessionId)
+        {
+            string sql = @"
+                UPDATE DbSession
+                SET LastAccessed = @LastAccessed
+                WHERE DbSessionId = @DbSessionId";
+            await DbHelper.ExecuteAsync(sql, new { DbSessionId = dbSessionId, LastAccessed = DateTime.Now });
         }
     }
 }

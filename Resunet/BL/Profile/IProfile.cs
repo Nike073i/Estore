@@ -6,5 +6,7 @@ namespace Resunet.BL.Profile
     {
         Task<IEnumerable<ProfileModel>> GetAsync(int userId);
         Task AddOrUpdateAsync(ProfileModel model);
+        Task AddProfileSkill(ProfileSkillModel model);
+        Task<IEnumerable<ProfileSkillModel>> GetProfileSkills(int profileId);
     }
 }

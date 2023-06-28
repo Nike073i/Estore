@@ -1,6 +1,7 @@
 ﻿using Resunet.BL.General;
 using Resunet.DAL;
 using Resunet.DAL.Models;
+using System.Text.Json;
 
 namespace Resunet.BL.Auth
 {
@@ -9,17 +10,20 @@ namespace Resunet.BL.Auth
         private readonly IDbSessionDal _sessionDal;
         private readonly IWebCookie _webCookie;
 
+        private SessionModel? _sessionModel;
+        private Dictionary<string, object> _sessionData;
+
         public DbSession(IDbSessionDal sessionDal, IWebCookie webCookie)
         {
             _sessionDal = sessionDal;
             _webCookie = webCookie;
+            _sessionData = new Dictionary<string, object>();
         }
 
-        private SessionModel? sessionModel = null;
         public async Task<SessionModel> GetSession()
         {
-            if (sessionModel != null)
-                return sessionModel;
+            if (_sessionModel != null)
+                return _sessionModel;
 
             Guid sessionId;
             var sessionString = _webCookie.Get(AuthConstants.SessionCookieName);
@@ -34,7 +38,11 @@ namespace Resunet.BL.Auth
                 data = await CreateSession();
                 CreateSessionCookie(data.DbSessionId);
             }
-            sessionModel = data;
+            _sessionModel = data;
+            if (data.SessionData != null)
+                _sessionData = JsonSerializer.Deserialize<Dictionary<string, object>>(data.SessionData) ?? new();
+
+            await _sessionDal.Extend(sessionId);
             return data;
         }
 
@@ -62,12 +70,44 @@ namespace Resunet.BL.Auth
             data.UserId = userId;
             data.DbSessionId = Guid.NewGuid();
             CreateSessionCookie(data.DbSessionId);
+            data.SessionData = JsonSerializer.Serialize(_sessionData);
             await _sessionDal.Create(data);
         }
 
         public void ResetSessionCache()
         {
-            sessionModel = null;
+            _sessionModel = null;
+        }
+
+        public void AddValue(string key, object value)
+        {
+            if (_sessionData.ContainsKey(key))
+                _sessionData[key] = value;
+            else
+                _sessionData.Add(key, value);
+        }
+
+        public void RemoveValue(string key)
+        {
+            _sessionData.Remove(key);
+        }
+
+        public async Task UpdateSessionData()
+        {
+            if (_sessionModel != null)
+            {
+                string dataJson = JsonSerializer.Serialize(_sessionData);
+                await _sessionDal.Update(_sessionModel.DbSessionId, dataJson);
+            }
+            else
+                throw new Exception("Сессия не загружена");
+        }
+
+        public object TryGetOrDefault(string key, object defaultValue)
+        {
+            if (_sessionData.ContainsKey(key))
+                return _sessionData[key];
+            return defaultValue;
         }
 
         private void CreateSessionCookie(Guid sessionId)
