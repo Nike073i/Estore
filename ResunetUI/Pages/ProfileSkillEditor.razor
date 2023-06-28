@@ -13,16 +13,28 @@ else
         <tbody>
             @foreach (var skill in _skills)
             {
-                <tr>
-                    <td>@skill.Name</td>
-                    <td>@skillNames[skill.Level]</td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                if (skill.Level >= 0 || skill.Level < skillNames.Length)
+                {
+                    <tr>
+                        <td>@skill.Name</td>
+                        <td>@skillNames[skill.Level]</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
             }
             <tr>
-                <td>
-                    <input type="text" @bind="editItem.Name" />
+                <td class="autocomplete">
+                    <input type="text" @bind="editItem.Name" @oninput="Filter" @onblur="CancelFilter"/>
+                    @if (@skillDict != null)
+                    {
+                        <ul class="options">
+                        @foreach (var skill in skillDict)
+                        {
+                             <li @onclick="() => SelectItem(skill)" value="@skill">@skill</li>  
+                        }
+                        </ul>
+                    }
                 </td>
                 <td>
                     <select @bind="editItem.Level">
@@ -44,6 +56,8 @@ else
     private readonly List<Skill> _skills = new List<Skill>();
     private string[] skillNames = { "Начинающий", "Имею опыт", "Продвинутый", "Эксперт" };
     private Skill editItem = new Skill();
+    private List<string>? skillDict = null;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,6 +74,31 @@ else
         await Http.PutAsJsonAsync<Skill>("skills/add", editItem);
         _skills.Add(editItem);
         editItem = new Skill();
+    }
+
+    private async Task SelectItem(string skillName)
+    {
+        editItem.Name = skillName;
+        await CancelFilter();
+    }
+
+    private async Task Filter(ChangeEventArgs e)
+    {
+        string? search = e.Value?.ToString();
+        if (search?.Length > 0)
+        {
+            skillDict = await Http.GetFromJsonAsync<List<string>>($"skills/search?filter={search}");
+        }
+        else
+        {
+            await CancelFilter();
+        }
+    }
+
+    private async Task CancelFilter()
+    {
+        await Task.Delay(200);
+        skillDict = null;
     }
 
     public class Skill

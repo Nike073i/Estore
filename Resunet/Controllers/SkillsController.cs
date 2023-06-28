@@ -24,6 +24,13 @@ namespace Resunet.Controllers
             return Ok();
         }
 
+        [HttpGet("/skills/search")]
+        public IActionResult Search(string filter)
+        {
+            var skilsDict = new List<string> { "C#", "SQL Server", "MySQL", "PosrgreSQL" };
+            return Ok(skilsDict.Where(skill => skill.Contains(filter)).Take(5));
+        }
+
         public class Skill
         {
             public string? Name { get; set; }
