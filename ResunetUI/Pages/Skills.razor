@@ -1,0 +1,70 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Мои скилы</PageTitle>
+
+@if (!_skills.Any())
+{
+    <p><em>Идёт загрузка скилов</em></p>
+}
+else
+{
+    <table class="table">
+        <tbody>
+            @foreach (var skill in _skills)
+            {
+                <tr>
+                    <td>@skill.Name</td>
+                    <td>@skillNames[skill.Level]</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            <tr>
+                <td>
+                    <input type="text" @bind="editItem.Name" />
+                </td>
+                <td>
+                    <select @bind="editItem.Level">
+                        @for (int i = 0; i < skillNames.Length; i++)
+                        {
+                            <option value="@i">@skillNames[i]</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button class="button" @onclick="SaveItem">Добавить</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private readonly List<Skill> _skills = new List<Skill>();
+    private string[] skillNames = { "Начинающий", "Имею опыт", "Продвинутый", "Эксперт" };
+    private Skill editItem = new Skill();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<Skill[]>("skills/my");
+        if (result != null)
+        {
+            _skills.Clear();
+            _skills.AddRange(result);
+        }
+    }
+
+    private async Task SaveItem()
+    {
+        await Http.PutAsJsonAsync<Skill>("skills/add", editItem);
+        _skills.Add(editItem);
+        editItem = new Skill();
+    }
+
+    public class Skill
+    {
+        public string? Name { get; set; } 
+        public int Level { get; set; } 
+    }
+}
