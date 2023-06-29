@@ -7,5 +7,6 @@ namespace Estore.DAL
 		Task<UserModel> GetUserAsync(int id);
 		Task<UserModel> GetUserAsync(string email);
 		Task<int> CreateUserAsync(UserModel model);
+		Task<IEnumerable<AppRoleModel>> GetRoles(int userId);
 	}
 }

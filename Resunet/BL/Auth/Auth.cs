@@ -61,6 +61,12 @@ namespace Estore.BL.Auth
         public async Task Login(int id)
         {
             await _dbSession.SetUserId(id);
+            var roles = await _authDal.GetRoles(id);
+            if (roles.Any(roles => roles.Abbreviation == AuthConstants.AdminRoleAbbr))
+            {
+                _dbSession.AddValue(AuthConstants.AdminRoleKey, AuthConstants.AdminRoleAbbr);
+                await _dbSession.UpdateSessionData();
+            }
         }
 
         public async Task ValidateEmail(string email)

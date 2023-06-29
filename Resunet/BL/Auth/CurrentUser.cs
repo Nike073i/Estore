@@ -1,6 +1,5 @@
 ﻿using Estore.BL.General;
 using Estore.DAL;
-using Estore.DAL.Models;
 
 namespace Estore.BL.Auth
 {
@@ -50,6 +49,12 @@ namespace Estore.BL.Auth
                 }
             }
             return isLoggedIn;
+        }
+
+        public bool IsAdmin()
+        {
+            return _dbSession.TryGetOrDefault(AuthConstants.AdminRoleKey, "")
+                    .ToString() == AuthConstants.AdminRoleAbbr;
         }
     }
 }

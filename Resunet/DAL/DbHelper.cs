@@ -5,7 +5,7 @@ namespace Estore.DAL
 {
 	public class DbHelper
 	{
-		public const string ConnString = "User ID=postgres;Password=password;Host=localhost;Port=5444;Database=test";
+		public static string ConnString = "User ID=postgres;Password=password;Host=localhost;Port=5444;Database=test";
 		
 		public static async Task ExecuteAsync(string sql, object model)
 		{

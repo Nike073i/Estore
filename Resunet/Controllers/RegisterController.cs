@@ -7,7 +7,7 @@ using Estore.ViewModels;
 
 namespace Estore.Controllers
 {
-    [SiteAuthorize("/", false)]
+    [SiteAllowAnonymous(isOnlyAnonymous: true)]
     public class RegisterController : Controller
     {
         private readonly IAuth _authBl;

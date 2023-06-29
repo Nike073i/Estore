@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Estore.BL.Auth;
+﻿using Estore.BL.Auth;
 using Estore.BL.Exceptions;
 using Estore.Filters;
 using Estore.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Estore.Controllers
 {
-    [SiteAuthorize("/", false)]
+    [SiteAllowAnonymous(isOnlyAnonymous: true)]
     public class LoginController : Controller
     {
         private readonly IAuth _authBl;

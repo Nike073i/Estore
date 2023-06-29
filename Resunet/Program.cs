@@ -36,4 +36,7 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 
+DbHelper.ConnString = app.Configuration.GetConnectionString("Default") 
+	?? throw new InvalidOperationException("Не задана строка подключения к БД");
+
 app.Run();

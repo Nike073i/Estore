@@ -4,10 +4,10 @@ namespace Estore.Filters
 {
     public class SiteAuthorizeAttribute : TypeFilterAttribute
     {
-        public SiteAuthorizeAttribute(string redirectUrl = "/", bool isRequired = true) 
+        public SiteAuthorizeAttribute(string redirectUrl = "/login", bool isRequiredAdmin = false)
             : base(typeof(SiteAuthorizeFilter))
         {
-            Arguments = new object[] { redirectUrl, isRequired };
+            Arguments = new object[] { redirectUrl, isRequiredAdmin };
         }
     }
 }

@@ -4,5 +4,6 @@
     {
         Task<bool> IsLoggedInAsync();
         Task<int?> GetCurrentUserIdAsync();
+        bool IsAdmin();
     }
 }

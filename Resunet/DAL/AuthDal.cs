@@ -12,6 +12,16 @@ namespace Estore.DAL
             return await DbHelper.QueryScalarAsync<int>(sql, model);
         }
 
+        public async Task<IEnumerable<AppRoleModel>> GetRoles(int userId)
+        {
+            string sql = @"
+                SELECT ar.AppRoleId, ar.RoleName, ar.Abbreviation
+                FROM AppRole ar
+                    JOIN AppUserAppRole auar ON ar.AppRoleId = auar.AppRoleId
+                WHERE auar.AppUserId = @userId";
+            return await DbHelper.QueryAsync<AppRoleModel>(sql, new { userId });
+        }
+
         public async Task<UserModel> GetUserAsync(int id)
         {
             var result = await DbHelper.QueryScalarAsync<UserModel>(@"
