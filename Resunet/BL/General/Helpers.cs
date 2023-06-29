@@ -1,6 +1,6 @@
 ﻿using System.Transactions;
 
-namespace Resunet.BL.General
+namespace Estore.BL.General
 {
     public static class Helpers
     {

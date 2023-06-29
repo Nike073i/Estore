@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Resunet.DAL.Models
+namespace Estore.DAL.Models
 {
     public class UserModel
     {

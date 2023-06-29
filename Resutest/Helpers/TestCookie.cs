@@ -1,4 +1,4 @@
-﻿using Resunet.BL.General;
+﻿using Estore.BL.General;
 
 namespace Resutest.Helpers
 {

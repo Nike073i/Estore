@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Npgsql;
 
-namespace Resunet.DAL
+namespace Estore.DAL
 {
 	public class DbHelper
 	{

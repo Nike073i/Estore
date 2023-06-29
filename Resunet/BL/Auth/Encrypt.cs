@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 
-namespace Resunet.BL.Auth
+namespace Estore.BL.Auth
 {
     public class Encrypt : IEncrypt
     {

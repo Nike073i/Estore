@@ -1,4 +1,4 @@
-﻿namespace Resunet.BL.General
+﻿namespace Estore.BL.General
 {
     public interface IWebCookie
     {

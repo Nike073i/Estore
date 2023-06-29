@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Resunet.ViewModels
+namespace Estore.ViewModels
 {
     public class RegisterViewModel : IValidatableObject
     {

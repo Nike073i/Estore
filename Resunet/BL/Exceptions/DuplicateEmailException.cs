@@ -1,4 +1,4 @@
-﻿namespace Resunet.BL.Exceptions
+﻿namespace Estore.BL.Exceptions
 {
     public class DuplicateEmailException : Exception
     {

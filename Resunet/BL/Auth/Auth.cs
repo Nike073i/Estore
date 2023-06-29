@@ -1,9 +1,9 @@
-﻿using Resunet.BL.Exceptions;
-using Resunet.BL.General;
-using Resunet.DAL;
-using Resunet.DAL.Models;
+﻿using Estore.BL.Exceptions;
+using Estore.BL.General;
+using Estore.DAL;
+using Estore.DAL.Models;
 
-namespace Resunet.BL.Auth
+namespace Estore.BL.Auth
 {
     public class Auth : IAuth
     {

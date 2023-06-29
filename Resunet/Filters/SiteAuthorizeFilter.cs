@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Resunet.BL.Auth;
+using Estore.BL.Auth;
 
-namespace Resunet.Filters
+namespace Estore.Filters
 {
     public class SiteAuthorizeFilter : IAsyncAuthorizationFilter
     {

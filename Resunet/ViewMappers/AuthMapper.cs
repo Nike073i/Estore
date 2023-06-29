@@ -1,7 +1,7 @@
-﻿using Resunet.DAL.Models;
-using Resunet.ViewModels;
+﻿using Estore.DAL.Models;
+using Estore.ViewModels;
 
-namespace Resunet.ViewMappers
+namespace Estore.ViewMappers
 {
     public class AuthMapper
 	{

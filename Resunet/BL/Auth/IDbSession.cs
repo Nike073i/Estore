@@ -1,6 +1,6 @@
-﻿using Resunet.DAL.Models;
+﻿using Estore.DAL.Models;
 
-namespace Resunet.BL.Auth
+namespace Estore.BL.Auth
 {
     public interface IDbSession
     {

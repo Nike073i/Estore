@@ -1,5 +1,5 @@
-using Resunet.BL.Exceptions;
-using Resunet.DAL.Models;
+using Estore.BL.Exceptions;
+using Estore.DAL.Models;
 using Resutest.Helpers;
 using System.Security.Authentication;
 

@@ -1,6 +1,6 @@
-﻿using Resunet.BL.Auth;
-using Resunet.BL.Exceptions;
-using Resunet.DAL.Models;
+﻿using Estore.BL.Auth;
+using Estore.BL.Exceptions;
+using Estore.DAL.Models;
 using Resutest.Helpers;
 
 namespace Resutest

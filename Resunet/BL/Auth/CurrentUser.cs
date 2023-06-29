@@ -1,27 +1,24 @@
-﻿using Resunet.BL.General;
-using Resunet.DAL;
-using Resunet.DAL.Models;
+﻿using Estore.BL.General;
+using Estore.DAL;
+using Estore.DAL.Models;
 
-namespace Resunet.BL.Auth
+namespace Estore.BL.Auth
 {
     public class CurrentUser : ICurrentUser
     {
         private readonly IDbSession _dbSession;
         private readonly IWebCookie _webCookie;
         private readonly IUserTokenDal _userTokenDal;
-        private readonly IProfileDal _profileDal;
 
         public CurrentUser(
             IDbSession dbSession,
             IWebCookie webCookie,
-            IUserTokenDal userTokenDal,
-            IProfileDal profileDal
+            IUserTokenDal userTokenDal
         )
         {
             _dbSession = dbSession;
             _webCookie = webCookie;
             _userTokenDal = userTokenDal;
-            _profileDal = profileDal;
         }
 
         public async Task<int?> GetCurrentUserIdAsync()
@@ -53,14 +50,6 @@ namespace Resunet.BL.Auth
                 }
             }
             return isLoggedIn;
-        }
-
-        public async Task<IEnumerable<ProfileModel>> GetCurrentProfiles()
-        {
-            int? userId = await GetCurrentUserIdAsync();
-            if (userId == null)
-                throw new Exception("Пользователь не найден");
-            return await _profileDal.GetByUserIdAsync(userId.Value);
         }
     }
 }

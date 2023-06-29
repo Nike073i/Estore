@@ -1,7 +1,7 @@
-﻿using Resunet.DAL.Models;
+﻿using Estore.DAL.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace Resunet.BL.Auth
+namespace Estore.BL.Auth
 {
 	public interface IAuth
 	{

@@ -1,6 +1,6 @@
-﻿using Resunet.DAL.Models;
+﻿using Estore.DAL.Models;
 
-namespace Resunet.DAL
+namespace Estore.DAL
 {
     public class DbSessionDal : IDbSessionDal
     {

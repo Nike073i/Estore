@@ -1,4 +1,4 @@
-namespace Resunet.Models
+namespace Estore.Models
 {
 	public class ErrorViewModel
 	{

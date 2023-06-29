@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Resunet.BL.Auth;
+using Estore.BL.Auth;
 
-namespace Resunet.ViewComponents
+namespace Estore.ViewComponents
 {
     public class MainMenuViewComponent : ViewComponent
     {

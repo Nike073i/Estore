@@ -1,4 +1,4 @@
-﻿namespace Resunet.DAL
+﻿namespace Estore.DAL
 {
     public interface IUserTokenDal
     {

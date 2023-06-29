@@ -1,9 +1,9 @@
-﻿using Resunet.BL.General;
-using Resunet.DAL;
-using Resunet.DAL.Models;
+﻿using Estore.BL.General;
+using Estore.DAL;
+using Estore.DAL.Models;
 using System.Text.Json;
 
-namespace Resunet.BL.Auth
+namespace Estore.BL.Auth
 {
     public class DbSession : IDbSession
     {

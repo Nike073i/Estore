@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Resunet.BL.Auth;
-using Resunet.BL.Exceptions;
-using Resunet.Filters;
-using Resunet.ViewMappers;
-using Resunet.ViewModels;
+using Estore.BL.Auth;
+using Estore.BL.Exceptions;
+using Estore.Filters;
+using Estore.ViewMappers;
+using Estore.ViewModels;
 
-namespace Resunet.Controllers
+namespace Estore.Controllers
 {
     [SiteAuthorize("/", false)]
     public class RegisterController : Controller

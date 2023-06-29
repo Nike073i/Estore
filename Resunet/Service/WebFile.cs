@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Resunet.Service
+namespace Estore.Service
 {
     public class WebFile
     {

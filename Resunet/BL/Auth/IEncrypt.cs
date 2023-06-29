@@ -1,4 +1,4 @@
-﻿namespace Resunet.BL.Auth
+﻿namespace Estore.BL.Auth
 {
     public interface IEncrypt
     {

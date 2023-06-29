@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Resunet\Resunet.csproj" />
+    <ProjectReference Include="..\Resunet\Estore.csproj" />
   </ItemGroup>
 
 </Project>

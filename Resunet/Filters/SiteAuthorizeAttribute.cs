@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Resunet.Filters
+namespace Estore.Filters
 {
     public class SiteAuthorizeAttribute : TypeFilterAttribute
     {
