@@ -1,6 +1,8 @@
 ﻿using Estore.BL.Auth;
+using Estore.BL.Catalog;
 using Estore.Filters;
 using Estore.Models;
+using Estore.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -9,18 +11,22 @@ namespace Estore.Controllers
     [SiteAllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ICurrentUser _currentUser;
+        private readonly IProduct _product;
 
-        public HomeController(ILogger<HomeController> logger, ICurrentUser currentUser)
+        public HomeController(ICurrentUser currentUser, IProduct product)
         {
-            _logger = logger;
             _currentUser = currentUser;
+            _product = product;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult>Index()
         {
-            return View();
+            var newProducts = await _product.GetNew(6);
+            return View("Index", new HomePageViewModel
+            {
+                NewProducts = newProducts.ToList()
+            });
         }
 
         public IActionResult Privacy()

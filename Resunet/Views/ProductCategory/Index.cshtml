@@ -1,0 +1,9 @@
+﻿@model CatalogViewModel
+
+<h1>Каталог</h1>
+<div class="row">
+    @foreach (var product in Model.Products)
+    {
+        await Html.RenderPartialAsync("_ProductCard", product);
+    }
+</div>

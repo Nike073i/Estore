@@ -3,19 +3,24 @@
 @{
     ViewData["Title"] = "Регистрация";
 }
-<div>
-    <form action="/register" method="post">
-        @Html.AntiForgeryToken()
-        <p>
-            <label>Email</label>
-            <input name="Email" type="text" value="@Model.Email"/>
-            <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
-        </p>
-        <p>
-            <label>Пароль</label>
-            <input name="Password" type="password"/>
-            <div class="error">@Html.ValidationMessageFor(m => m.Password)</div>
-        </p>
-        <button>Зарегистрироваться</button>
-    </form>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Регистрация</h2>
+        <form action="/register" method="post">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <label>Email</label>
+                <input name="Email" class="form-control" type="text" value="@Model.Email" />
+                <div class="error">@Html.ValidationMessageFor(m => m.Email)</div>
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input name="Password" class="form-control" type="password" />
+                <div class="error">@Html.ValidationMessageFor(m => m.Password)</div>
+            </div>
+            <br />
+            <button class="button">Зарегистрироваться</button>
+        </form>
+    </div>
 </div>

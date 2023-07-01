@@ -1,0 +1,30 @@
+﻿@model AuthorDataModel
+
+@{
+    var author = Model.Author;
+    ViewData["Title"] = $"{author.LastName} {author.FirstName} {author.MiddleName}";
+}
+
+<div>
+    <h1>Автор @author.LastName @author.FirstName @author.MiddleName</h1>
+    <div class="row">
+        <div class="col-md-2">
+            <img src="@author.AuthorImage" class="author-image" alt="@author.AuthorImage" />
+        </div>
+        <div class="col-md-10">
+            <p>@author.Description</p>
+        </div>
+    </div>
+
+    <hr />
+    <div>
+        <h3>Книги:</h3>
+        <div class="row">
+            @foreach (var product in Model.ProductCards)
+            {
+                await Html.RenderPartialAsync("_ProductCard", product);
+            }
+        </div>
+    </div>
+</div>
+
