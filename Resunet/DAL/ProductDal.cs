@@ -5,6 +5,14 @@ namespace Estore.DAL
 {
     public class ProductDal : IProductDal
     {
+        public async Task<int> AddCategory(CategoryModel category)
+        {
+            string sql = @"
+                INSERT INTO Category(ParentCategoryId, CategoryName, CategoryUniqueId)
+                VALUES (@ParentCategoryId, @CategoryName, @CategoryUniqueId) returning CategoryId";
+            return await DbHelper.QueryScalarAsync<int>(sql, category);
+        }
+
         public async Task<IEnumerable<AuthorModel>> GetAuthorsByProduct(int productId)
         {
             string sql = @"
@@ -15,9 +23,18 @@ namespace Estore.DAL
             return await DbHelper.QueryAsync<AuthorModel>(sql, new { productId });
         }
 
+        public async Task<CategoryModel?> GetCategory(int categoryId)
+        {
+            string sql = @"
+                    SELECT CategoryId, ParentCategoryId, CategoryName, CategoryUniqueId
+                    FROM Category
+                    WHERE CategoryId = @categoryId";
+            return await DbHelper.QueryScalarAsync<CategoryModel>(sql, new { categoryId });
+        }
+
         public async Task<int?> GetCategoryId(IEnumerable<string> uniqueIds)
         {
-            if (!uniqueIds.Any()) return 0;
+            if (!uniqueIds.Any()) return null;
             var stringBuilder = new StringBuilder();
             var parameters = new Dictionary<string, object>();
             int index = 0;
@@ -34,26 +51,14 @@ namespace Estore.DAL
             return await DbHelper.QueryScalarAsync<int>(sql, parameters);
         }
 
-        public async Task<IEnumerable<CategoryModel>> GetCategoryTree(int categoryId)
+        public async Task<IEnumerable<CategoryModel>> GetChildCategories(int? categoryId)
         {
-            CategoryModel? model;
-            int? currentCategoryId = categoryId;
-            var result = new List<CategoryModel>();
-            while (currentCategoryId != null)
-            {
-                string sql = @"
-                    SELECT CategoryId, ParentCategoryId, CategoryName, CategoryUniqueId
-                    FROM Category
-                    WHERE CategoryId = @currentCategoryId";
-                model = await DbHelper.QueryScalarAsync<CategoryModel>(sql, new { currentCategoryId });
-                if (model != null)
-                {
-                    result.Add(model);
-                    currentCategoryId = model.ParentCategoryId;
-                }
-                else break;
-            }
-            return result;
+            string baseQuery = @"SELECT CategoryId, ParentCategoryId, CategoryName, CategoryUniqueId
+                                 FROM Category ";
+            if (categoryId != null)
+                return await DbHelper.QueryAsync<CategoryModel>(baseQuery + "WHERE ParentCategoryId = @categoryId", new { categoryId });
+            else
+                return await DbHelper.QueryAsync<CategoryModel>(baseQuery + "WHERE ParentCategoryId IS NULL", new { });
         }
 
         public async Task<ProductModel?> GetProduct(string uniqueId)

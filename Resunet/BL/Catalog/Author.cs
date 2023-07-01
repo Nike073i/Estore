@@ -21,7 +21,7 @@ namespace Estore.BL.Catalog
             if (authorModel == null) return null;
             var products = await _productSearchDal.Search(new ProductSearchFilter
             {
-                Top = 100,
+                PageSize = 100,
                 SortBy = ProductSearchFilter.SortByColumn.ReleaseDate,
                 Direction = ProductSearchFilter.SortDirection.Desc,
                 AuthorId = authorModel.AuthorId,

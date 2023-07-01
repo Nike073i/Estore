@@ -1,9 +1,8 @@
-﻿using Estore.Filters;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Estore.Areas.Admin.Controllers
 {
-    public class HomeController : BaseController
+    public class NewsController : BaseController
     {
         public IActionResult Index()
         {

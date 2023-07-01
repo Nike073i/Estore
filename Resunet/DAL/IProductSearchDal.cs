@@ -5,5 +5,6 @@ namespace Estore.DAL
     public interface IProductSearchDal
     {
         Task<IEnumerable<ProductCardModel>> Search(ProductSearchFilter filter);
+        Task<int> GetCount(ProductSearchFilter filter);
     }
 }

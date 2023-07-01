@@ -1,9 +1,32 @@
 ﻿@model CatalogViewModel
 
 <h1>Каталог</h1>
+
 <div class="row">
-    @foreach (var product in Model.Products)
+    <div class="col-md-@if (Model.ChildCategories.Any()) { <text>9</text> } else { <text>12</text> } ">
+        @{
+            await Html.RenderPartialAsync("_Pagination", Model.Pagination);
+        }
+        <div class="row">
+            @foreach (var product in Model.Products)
+            {
+                await Html.RenderPartialAsync("_ProductCard", product);
+            }
+        </div>
+        @{
+            await Html.RenderPartialAsync("_Pagination", Model.Pagination);
+        }
+    </div>
+
+    @if (Model.ChildCategories.Any())
     {
-        await Html.RenderPartialAsync("_ProductCard", product);
+        <div class="category-list col-md-3">
+            <ul>
+                @foreach (var category in Model.ChildCategories)
+                {
+                    <li><a href="@Model.Pagination.BaseUrl/@category.CategoryUniqueId" class="category-item">@category.CategoryName</a></li>
+                }
+            </ul>
+        </div>
     }
 </div>

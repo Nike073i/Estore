@@ -5,11 +5,26 @@ namespace Estore.DAL
 {
     public class ProductSearchDal : IProductSearchDal
     {
+        readonly string ProductCardModelSql = "SELECT p.ProductImage, p.ProductName, p.Price, p.UniqueId FROM Product p ";
+        readonly string ProductCardCountSql = "SELECT COUNT(*) FROM Product p ";
+
         public async Task<IEnumerable<ProductCardModel>> Search(ProductSearchFilter filter)
+        {
+            return await GetData<ProductCardModel>(ProductCardModelSql, filter, true);
+        }
+
+        public async Task<int> GetCount(ProductSearchFilter filter)
+        {
+            var count = await GetData<int>(ProductCardCountSql, filter, false);
+            return count.FirstOrDefault();
+        }
+
+        private async Task<IEnumerable<T>> GetData<T>(string baseSqlQuery, ProductSearchFilter filter, bool order)
         {
             var parameters = new Dictionary<string, object>
             {
-                { "top", filter.Top }
+                { "pageSize", filter.PageSize },
+                { "offset", filter.Offset }
             };
             var joins = new Dictionary<string, string>();
             var where = new StringBuilder("WHERE 1 = 1 ");
@@ -30,14 +45,17 @@ namespace Estore.DAL
                 where.Append("AND @categoryId in (c1.CategoryId, c2.CategoryId, c3.CategoryId, c3.ParentCategoryId) ");
                 parameters.Add("categoryId", filter.CategoryId);
             }
-            string sql = @"
-                SELECT p.ProductImage, p.ProductName, p.Price, p.UniqueId
-                FROM Product p " +
+
+            string orderBy = string.Empty;
+            if (order)
+                orderBy = $"ORDER BY {filter.SortBy} {filter.Direction} LIMIT @pageSize OFFSET @offset ";
+
+            string sql =
+                baseSqlQuery +
                 string.Join(" ", joins.Values) +
                 where.ToString() +
-                $"ORDER BY {filter.SortBy} {filter.Direction} " +
-                "LIMIT @top";
-            return await DbHelper.QueryAsync<ProductCardModel>(sql, parameters);
+                orderBy;
+            return await DbHelper.QueryAsync<T>(sql, parameters);
         }
     }
 }
