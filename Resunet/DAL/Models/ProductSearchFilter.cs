@@ -10,5 +10,6 @@
         public SortByColumn SortBy { get; set; } = SortByColumn.ReleaseDate;
         public SortDirection Direction { get; set; } = SortDirection.Asc;
         public int? CategoryId { get; set; }
+        public string? SerieName { get; set; }
     }
 }

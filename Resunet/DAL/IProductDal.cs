@@ -11,5 +11,6 @@ namespace Estore.DAL
         Task<int?> GetCategoryId(IEnumerable<string> uniqueIds);
         Task<IEnumerable<CategoryModel>> GetChildCategories(int? categoryId);
         Task<int> AddCategory(CategoryModel category);
+        Task<IEnumerable<ProductSerieModel>> LoadProductSeries();
     }
 }

@@ -11,5 +11,7 @@ namespace Estore.BL.Catalog
         Task<int?> GetCategoryId(IEnumerable<string> uniqueIds);
         Task<IEnumerable<CategoryModel>> GetChildCategories(int? categoryId);
         Task<int> AddCategory(int? categoryId, string name);
+        Task<IEnumerable<CategoryModel>> GetCategoryTree(int categoryId);
+        Task<Tuple<int, IEnumerable<ProductCardModel>>> GetBySerie(string serieName, int pageSize, int page);
     }
 }

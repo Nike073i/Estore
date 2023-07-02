@@ -11,6 +11,7 @@ namespace Estore.BL.Catalog
         private readonly IProductSearchDal _productSearchDal;
 
         public static readonly Dictionary<int, CategoryModel?> CategoriesCache = new();
+        public static readonly Dictionary<int, ProductSerieModel?> ProductSerieCache = new();
 
         public Product(IProductDal productDal, IProductSearchDal productSearchDal)
         {
@@ -64,7 +65,7 @@ namespace Estore.BL.Catalog
             });
         }
 
-        private async Task<IEnumerable<CategoryModel>> GetCategoryTree(int categoryId)
+        public async Task<IEnumerable<CategoryModel>> GetCategoryTree(int categoryId)
         {
             CategoryModel? model;
             int? currentCategoryId = categoryId;
@@ -92,6 +93,20 @@ namespace Estore.BL.Catalog
             return result;
         }
 
+        private async Task<ProductSerieModel?> GetProductSerie(int productSerieId)
+        {
+            if (!ProductSerieCache.ContainsKey(productSerieId))
+            {
+                var series = await _productDal.LoadProductSeries();
+                foreach (var serie in series)
+                {
+                    if (!ProductSerieCache.ContainsKey(serie.ProductSerieId!.Value))
+                        ProductSerieCache.Add(serie.ProductSerieId!.Value, serie);
+                }
+            }
+            return ProductSerieCache[productSerieId];
+        }
+
         public async Task<CompleteProductDataModel?> GetProduct(string uniqueId)
         {
             var product = await _productDal.GetProduct(uniqueId);
@@ -99,13 +114,32 @@ namespace Estore.BL.Catalog
             var details = await _productDal.GetProductDetails(product.ProductId!.Value);
             var authors = await _productDal.GetAuthorsByProduct(product.ProductId!.Value);
             var categories = await GetCategoryTree(product.CategoryId);
+            var serie = await GetProductSerie(product.ProductSerieId!.Value) ?? 
+                throw new Exception("Серия продукта не найдена");
             return new()
             {
                 Product = product,
                 ProductDetail = details.ToList(),
                 Author = authors.ToList(),
                 Categories = categories.ToList(),
+                Serie = serie
             };
+        }
+
+        public async Task<Tuple<int, IEnumerable<ProductCardModel>>> GetBySerie(string serieName, int pageSize, int page)
+        {
+            var filter = new ProductSearchFilter
+            {
+                SerieName = serieName,
+                PageSize = pageSize,
+                SortBy = ProductSearchFilter.SortByColumn.ReleaseDate,
+                Direction = ProductSearchFilter.SortDirection.Desc,
+                Offset = pageSize * (page - 1),
+            };
+
+            var count = await _productSearchDal.GetCount(filter);
+            var products = await _productSearchDal.Search(filter);
+            return new(count, products);
         }
     }
 }

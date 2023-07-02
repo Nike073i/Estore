@@ -3,10 +3,10 @@
 namespace Estore.DAL
 {
     public interface IAuthDal
-	{
-		Task<UserModel> GetUserAsync(int id);
-		Task<UserModel> GetUserAsync(string email);
-		Task<int> CreateUserAsync(UserModel model);
-		Task<IEnumerable<AppRoleModel>> GetRoles(int userId);
-	}
+    {
+        Task<UserModel> GetUserAsync(int id);
+        Task<UserModel> GetUserAsync(string email);
+        Task<int> CreateUserAsync(UserModel model);
+        Task<IEnumerable<AppRoleModel>> GetRoles(int userId);
+    }
 }

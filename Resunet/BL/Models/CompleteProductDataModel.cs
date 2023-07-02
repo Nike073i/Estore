@@ -8,6 +8,8 @@ namespace Estore.BL.Models
         public List<ProductDetailModel> ProductDetail { get; set; } = null!;
         public List<AuthorModel> Author { get; set; } = null!;
         public List<CategoryModel> Categories { get; set; } = null!;
+        public List<BreadcrumpModel>? Breadcrumps { get; set; } = null;
+        public ProductSerieModel Serie { get; set; } = null!;
 
         public string CategoryPath(int index)
         {

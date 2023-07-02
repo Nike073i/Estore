@@ -47,6 +47,11 @@ h1 {
     outline: none;
 }
 
+.button:hover {
+    color: #DD585A;
+    background-color: #ccc;
+}
+
 header {
     background: URL('/data/bg.jpg') no-repeat;
     background-size: cover;
@@ -165,4 +170,32 @@ footer {
 
 .navigation .pages * {
     padding: 4px 10px;
+}
+
+.buy-now {
+    padding: 20px;
+}
+
+.price-big {
+    margin-right: 30px;
+    padding: 20px;
+    background: #F5F7FB;
+    border: 1px solid #BDCBE6;
+    height: 200px;
+    display: inline-block;
+    text-align: center;
+    box-shadow: 0px 10px 10px #ccc;
+}
+
+.price-big .price {
+    font-size: 150%;
+    padding: 25px 0px;
+}
+
+.cart-list {
+    padding-top: 20px;
+}
+
+.cart-list .product-image {
+    max-width: 100px;
 }

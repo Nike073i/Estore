@@ -13,6 +13,7 @@ builder.Services.AddSingleton<IUserTokenDal, UserTokenDal>();
 builder.Services.AddSingleton<IAuthorDal, AuthorDal>();
 builder.Services.AddSingleton<IProductDal, ProductDal>();
 builder.Services.AddSingleton<IProductSearchDal, ProductSearchDal>();
+builder.Services.AddSingleton<ICartDal, CartDal>();
 
 
 builder.Services.AddScoped<IAuth, Auth>();
@@ -23,6 +24,8 @@ builder.Services.AddScoped<IDbSession, DbSession>();
 builder.Services.AddScoped<IWebCookie, WebCookie>();
 builder.Services.AddSingleton<IProduct, Product>();
 builder.Services.AddSingleton<IAuthor, Author>();
+builder.Services.AddScoped<ICart, Cart>();
+
 
 var app = builder.Build();
 

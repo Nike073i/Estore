@@ -78,5 +78,13 @@ namespace Estore.DAL
                 WHERE ProductId = @productId";
             return await DbHelper.QueryAsync<ProductDetailModel>(sql, new { productId });
         }
+
+        public async Task<IEnumerable<ProductSerieModel>> LoadProductSeries()
+        {
+            string sql = @"
+                SELECT ProductSerieId, SerieName
+                FROM ProductSerie";
+            return await DbHelper.QueryAsync<ProductSerieModel>(sql, new { });
+        }
     }
 }

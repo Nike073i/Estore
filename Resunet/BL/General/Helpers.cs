@@ -3,6 +3,7 @@ using System.Transactions;
 
 namespace Estore.BL.General
 {
+
     public static class Helpers
     {
         public static TransactionScope CreateTransactionScope(int seconds = 60)

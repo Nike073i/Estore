@@ -1,4 +1,5 @@
-﻿using Estore.DAL.Models;
+﻿using Estore.BL.Models;
+using Estore.DAL.Models;
 
 namespace Estore.ViewModels
 {
@@ -6,6 +7,7 @@ namespace Estore.ViewModels
     {
         public PaginationViewModel Pagination { get; set; } = null!;
         public List<ProductCardModel> Products { get; set; } = null!;
-        public List<CategoryModel> ChildCategories { get; set; } = null!;
+        public List<CategoryModel>? ChildCategories { get; set; }
+        public List<BreadcrumpModel>? Breadcrumps { get; set; }
     }
 }

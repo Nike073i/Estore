@@ -35,6 +35,15 @@ namespace Estore.DAL
                 where.Append("AND pa.AuthorId = @authorId ");
                 parameters.Add("authorId", filter.AuthorId);
             }
+
+            if (filter.SerieName != null)
+            {
+                if (!joins.ContainsKey("ProductSerie"))
+                    joins.Add("ProductSerie", "JOIN ProductSerie ps ON p.ProductSerieId = ps.ProductSerieId ");
+                where.Append("AND ps.SerieName = @productSerie ");
+                parameters.Add("productSerie", filter.SerieName);
+            }
+
             if (filter.CategoryId != null)
             {
                 if (!joins.ContainsKey("Category"))

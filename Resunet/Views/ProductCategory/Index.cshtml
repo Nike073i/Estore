@@ -1,9 +1,14 @@
 ﻿@model CatalogViewModel
 
-<h1>Каталог</h1>
+@if (Model.Breadcrumps != null && Model.Breadcrumps.Any())
+{
+    await Html.RenderPartialAsync("_Breadcrumps", Model.Breadcrumps);
+}
+
+<h1>@ViewData["Title"]</h1>
 
 <div class="row">
-    <div class="col-md-@if (Model.ChildCategories.Any()) { <text>9</text> } else { <text>12</text> } ">
+    <div class="col-md-@if (Model.ChildCategories?.Count > 0){ <text>9</text> } else { <text>12</text> } ">
         @{
             await Html.RenderPartialAsync("_Pagination", Model.Pagination);
         }
@@ -18,7 +23,7 @@
         }
     </div>
 
-    @if (Model.ChildCategories.Any())
+    @if (Model.ChildCategories?.Count > 0)
     {
         <div class="category-list col-md-3">
             <ul>
