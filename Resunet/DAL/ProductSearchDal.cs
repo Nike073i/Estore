@@ -7,6 +7,12 @@ namespace Estore.DAL
     {
         readonly string ProductCardModelSql = "SELECT p.ProductImage, p.ProductName, p.Price, p.UniqueId FROM Product p ";
         readonly string ProductCardCountSql = "SELECT COUNT(*) FROM Product p ";
+        private readonly IDbHelper _dbHelper;
+
+        public ProductSearchDal(IDbHelper dbHelper)
+        {
+            _dbHelper = dbHelper;
+        }
 
         public async Task<IEnumerable<ProductCardModel>> Search(ProductSearchFilter filter)
         {
@@ -64,7 +70,7 @@ namespace Estore.DAL
                 string.Join(" ", joins.Values) +
                 where.ToString() +
                 orderBy;
-            return await DbHelper.QueryAsync<T>(sql, parameters);
+            return await _dbHelper.QueryAsync<T>(sql, parameters);
         }
     }
 }

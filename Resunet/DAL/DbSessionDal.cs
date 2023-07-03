@@ -4,12 +4,19 @@ namespace Estore.DAL
 {
     public class DbSessionDal : IDbSessionDal
     {
+        private readonly IDbHelper _dbHelper;
+
+        public DbSessionDal(IDbHelper dbHelper)
+        {
+            _dbHelper = dbHelper;
+        }
+
         public async Task Create(SessionModel model)
         {
             string sql = @"
                 INSERT INTO DbSession (DbSessionId, SessionData, Created, LastAccessed, UserId)
                 VALUES (@DbSessionId, @SessionData, @Created, @LastAccessed, @UserId)";
-            await DbHelper.ExecuteAsync(sql, model);
+            await _dbHelper.ExecuteAsync(sql, model);
         }
 
         public async Task<SessionModel?> Get(Guid sessionId)
@@ -18,7 +25,7 @@ namespace Estore.DAL
                 SELECT DbSessionId, SessionData, Created, LastAccessed, UserId
                 FROM DbSession
                 WHERE DbSessionId = @sessionId";
-            return await DbHelper.QueryScalarAsync<SessionModel>(sql, new { sessionId = sessionId });
+            return await _dbHelper.QueryScalarAsync<SessionModel>(sql, new { sessionId = sessionId });
         }
 
         public async Task Lock(Guid sessionId)
@@ -28,7 +35,7 @@ namespace Estore.DAL
                 FROM DbSession
                 WHERE DbSessionId = @sessionId
                 FOR UPDATE";
-            await DbHelper.ExecuteAsync(sql, new { sessionId = sessionId });
+            await _dbHelper.ExecuteAsync(sql, new { sessionId = sessionId });
         }
 
         public async Task Update(Guid dbSessionId, string sessionData)
@@ -37,7 +44,7 @@ namespace Estore.DAL
                 UPDATE DbSession
                 SET SessionData = @SessionData
                 WHERE DbSessionId = @DbSessionId";
-            await DbHelper.ExecuteAsync(sql, new { DbSessionId = dbSessionId, SessionData = sessionData });
+            await _dbHelper.ExecuteAsync(sql, new { DbSessionId = dbSessionId, SessionData = sessionData });
         }
 
         public async Task Extend(Guid dbSessionId)
@@ -46,7 +53,7 @@ namespace Estore.DAL
                 UPDATE DbSession
                 SET LastAccessed = @LastAccessed
                 WHERE DbSessionId = @DbSessionId";
-            await DbHelper.ExecuteAsync(sql, new { DbSessionId = dbSessionId, LastAccessed = DateTime.Now });
+            await _dbHelper.ExecuteAsync(sql, new { DbSessionId = dbSessionId, LastAccessed = DateTime.Now });
         }
     }
 }

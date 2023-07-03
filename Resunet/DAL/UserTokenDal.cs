@@ -2,13 +2,20 @@
 {
     public class UserTokenDal : IUserTokenDal
     {
+        private readonly IDbHelper _dbHelper;
+
+        public UserTokenDal(IDbHelper dbHelper)
+        {
+            _dbHelper = dbHelper;
+        }
+
         public async Task<Guid> Create(int userId)
         {
             Guid tokenId = Guid.NewGuid();
             string sql = @"
                 INSERT INTO UserToken (UserTokenId, UserId, Created)
                 VALUES (@tokenId, @userId, NOW())";
-            await DbHelper.ExecuteAsync(sql, new { tokenId = tokenId, userId = userId });
+            await _dbHelper.ExecuteAsync(sql, new { tokenId, userId });
             return tokenId;
         }
 
@@ -18,7 +25,7 @@
                 SELECT UserId
                 FROM UserToken
                 WHERE UserTokenId = @tokenId";
-            return await DbHelper.QueryScalarAsync<int>(sql, new { tokenId = tokenId });
+            return await _dbHelper.QueryScalarAsync<int>(sql, new { tokenId });
         }
     }
 }
